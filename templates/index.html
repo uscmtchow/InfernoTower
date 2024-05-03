@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneaky Cam</title>
+</head>
+<body>
+    <h1>Camera Feed:</h1>
+</body>
+<script>
+    function fetchData() {
+        fetch('/data')
+            .then(response => response.json()).then(
+                response => {
+                    let blog = document.getElementById('blog');
+
+                    for (let i = 0; i < response.length; i++) {
+                    let div = document.createElement('div');
+                    let br = document.createElement('hr');
+                    let h2 = document.createElement('h2');
+                    let p = document.createElement('p');
+                    h2.textContent = response[i].timestamp;
+                    p.textContent = "person detected";
+                    var img = new Image();
+                    var base64 = response[i].image;
+                    img.width = 320;
+                    img.height = 320;
+                    img.src = "data:image/jpg;base64," + base64;
+
+                    div.appendChild(br);
+                    div.appendChild(h2);
+                    div.appendChild(p);
+                    div.appendChild(img);
+
+                    blog.prepend(div);
+                }
+                }
+                
+            )
+    }
+
+    // Fetch data every second
+    setInterval(fetchData, 500);
+</script>
+<div id="blog">
+</div>
+</html>
